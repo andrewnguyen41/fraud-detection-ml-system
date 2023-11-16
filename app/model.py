@@ -4,21 +4,21 @@ import os
 import pickle
 import numpy as np
 import concurrent.futures
-from app.train import train_model
+from app.train import preprocess_value, train_model
 from .s3_utils import download_data_from_s3, download_model_from_s3, getS3Client
 
 latest_train_timestamp = None
 
 def load_model():
     global latest_train_timestamp
-    modelPath = 'xgboost_model.pkl'
+    modelPath = './models/xgboost_model.pkl'
     if os.path.exists(modelPath):
         if latest_train_timestamp == None:
             modification_time = os.path.getmtime(modelPath)
             last_modified_date = datetime.fromtimestamp(modification_time).strftime("%Y%m%d_%H%M%S")
             latest_train_timestamp = last_modified_date
-        with open(modelPath, 'r') as file:
-            return file
+
+        return pickle.load(open(modelPath, 'rb'))
     else:
         print("Model local file does not exist, download from s3")
         return download_model_from_s3()
@@ -36,10 +36,15 @@ def save_model_to_s3(model):
         return False
     
 def predict(json_data):
-    data_list = json.loads(json_data)
-    # Convert list to NumPy array and reshape it to (1, 30)
-    numpy_array = np.array(data_list).reshape(1, 30)
-    return model_cache.predict(numpy_array)
+    parsed_data = json.loads(json_data)
+    numpy_array = preprocess_value(parsed_data)
+    result = model_cache.predict(numpy_array)
+    print(result)
+    response = {
+        "is_fraud": bool(result)
+    }
+    print(response)
+    return response
 
 def retrain_model():
     #combine all new data files into single file to train
@@ -54,11 +59,9 @@ def retrain_model():
     for f in train_files:
         combined_data = combined_data.append(pd.read_csv(f), ignore_index=True)
 
-    combined_data.to_csv('./creditcard.csv', index=False)
+    combined_data.to_csv('./models/creditcard.csv', index=False)
 
     model = train_model()
-    with open('xgboost_model.pkl', 'wb') as file:
-        pickle.dump(model, file)
     save_model_to_s3(model)
     model_cache.reloadModel()
 
