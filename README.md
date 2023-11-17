@@ -5,7 +5,10 @@ This is a Flask-based Fraud Detection ML System utilizes XGBoost for training an
 The system implements a mechanism to regularly check for new data in an AWS S3 bucket, retraining the model accordingly and updating it for future predictions.
 
 ### System Architect Overview
-![System Architect](./system-architect.png)
+<div align="center">
+<img src="./system-architect.png" alt="System Architect" width="80%"/>
+</div>
+
 - **User Interaction**:
   - Users submit transaction data to the Flask app for fraud prediction
   - Flask preprocesses this data and uses a pre-trained ML model to determine fraud likelihood
@@ -87,4 +90,4 @@ You can run the test suite using the provided test files (`test_app.py`). Execut
 
 - This system assumes the presence of certain files (`xgboost_model.pkl`, `creditcard.csv`, etc.) locally or in the specified AWS S3 bucket. Ensure these resources are available before running the system.
 
-For any issues or improvements, feel free to contribute or report them.
+Feel free to delve into the code and make adjustments to suit your specific requirements. If you encounter any questions or issues, don't hesitate to reach out. Happy coding!
