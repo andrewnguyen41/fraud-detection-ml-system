@@ -5,7 +5,7 @@ import pickle
 import numpy as np
 import concurrent.futures
 from app.train import preprocess_value, train_model
-from .s3_utils import download_data_from_s3, download_model_from_s3, getS3Client
+from .s3_utils import download_data_from_s3, download_model_from_s3, getS3Client, save_to_s3
 
 latest_train_timestamp = None
 
@@ -24,16 +24,8 @@ def load_model():
         return download_model_from_s3()
 
 def save_model_to_s3(model):
-    s3 = getS3Client()
-    
-    try:
-        serialized_model = pickle.dumps(model)
-        s3.put_object(Bucket=os.getenv('S3_BUCKET_NAME'), Key='xgboost_model.pkl', Body=serialized_model)
-        print("Model saved successfully to S3.")
-        return True
-    except Exception as e:
-        print(f"Error saving model to S3: {str(e)}")
-        return False
+    serialized_model = pickle.dumps(model)
+    save_to_s3(serialized_model, 'xgboost_model.pkl')    
     
 def predict(json_data):
     parsed_data = json.loads(json_data)
