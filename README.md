@@ -6,7 +6,7 @@ The system implements a mechanism to regularly check for new data in an AWS S3 b
 
 ### System Architect Overview
 <div align="center">
-<img src="./system-architect.png" alt="System Architect" width="80%"/>
+<img src="./imgs/system-architect.png" alt="System Architect" width="80%"/>
 </div>
 
 - **User Interaction**:
@@ -39,10 +39,24 @@ The dataset used in this project is [Credit Card Fraud Detection Dataset from Ka
 ##### Normalization
 The dataset contain features with different scales. For instance, transaction amounts range from small to large values, while time feature have different scales altogether. Differences in feature scales can bias machine learning algorithms, favoring features with larger scales. \
 RobustScaler is a method used to scale features while handling outliers robustly. It is particularly beneficial in scenarios where the dataset contains outliers or extreme values, as it doesn't consider outliers when computing the scaling parameters.
+<div align="center">
+<img src="./imgs/data-distribution.png" alt="Data Distribution" width="60%"/> <br/>
+<sup>Data Distribution</sup>
+</div>
 
 ##### Handling Data Imbalance
-The credit card fraud dataset is imbalanced, where one class (fraudulent transactions) is significantly less common than the other (non-fraudulent transactions). This can bias machine learning models towards the majority class. \
+The credit card fraud dataset is imbalanced, where one class (fraudulent transactions) is significantly less common than the other (non-fraudulent transactions). This can bias machine learning models towards the majority class.
+<div align="center">
+<img src="./imgs/data-imblance.png" alt="Data Imblance" width="60%"/><br/>
+<sup>Before SMOTE</sup>
+</div>
+
 SMOTE (Synthetic Minority Over-sampling Technique) is used to handle such imbalances by generating synthetic examples from the minority class, thereby balancing the dataset and mitigating bias in model training.
+
+<div align="center">
+<img src="./imgs/data-balance.png" alt="Data Balance" width="60%"/><br/>
+<sup>After SMOTE</sup>
+</div>
 
 ##### XGBoost
 XGBoost is an efficient and scalable gradient boosting library widely used for classification tasks. It constructs an ensemble of decision trees to make predictions and incorporates regularization techniques to prevent overfitting. \
@@ -50,6 +64,15 @@ XGBoost is well-suited for this dataset due to its adeptness in capturing non-li
 
 ##### F1 Score
 The model achieved an F1 score of 0.92. The F1 score is a metric that considers both precision and recall, providing a balanced assessment of a model's performance, especially in scenarios with imbalanced classes.
+<div align="center">
+<img src="./imgs/report.png" alt="Data Balance" width="60%"/> <br/>
+<sup>Report</sup>
+</div>
+<div align="center">
+<img src="./imgs/confusion-matrix.png" alt="Data Balance" width="60%"/><br/>
+<sup>Confusion Matrix</sup>
+</div>
+
 
 ### Project Structure
 
