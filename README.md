@@ -1,4 +1,4 @@
-# Fraud Detection ML System
+# Fraud Detection Machine Learning System
 
 This is a Flask-based Fraud Detection ML System utilizes XGBoost for training and SMOTE for handling imbalanced data, achieving an F1 score of 0.92 on Kaggle dataset.
 
