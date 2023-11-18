@@ -2,7 +2,7 @@
 
 This is a Flask-based Fraud Detection Machine Learning System utilizes XGBoost for training and SMOTE for handling imbalanced data, achieving an F1 score of 0.92 on Kaggle dataset.
 
-The system implements a mechanism to regularly check for new data in an AWS S3 bucket, retraining the model accordingly and updating it for future predictions.
+The system implements a mechanism to regularly check for new data in an AWS S3 bucket, retraining the model accordingly to adapt continous update data patterns.
 
 ### System Architect Overview
 <div align="center">
