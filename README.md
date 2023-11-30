@@ -4,7 +4,7 @@ This is a Flask-based Fraud Detection Machine Learning System utilizes XGBoost f
 
 The system implements a mechanism to regularly check for new data in an AWS S3 bucket, retraining the model accordingly to adapt continous update data patterns.
 
-### System Architect Overview
+### Application Flow Overview
 <div align="center">
 <img src="./imgs/system-architect.png" alt="System Architect" width="80%"/>
 </div>
