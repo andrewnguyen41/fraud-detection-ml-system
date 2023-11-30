@@ -4,7 +4,7 @@ import os
 import pickle
 import numpy as np
 import concurrent.futures
-from app.train import preprocess_value, train_model
+from src.train import preprocess_value, train_model
 from .s3_utils import download_data_from_s3, download_model_from_s3, getS3Client, save_to_s3
 
 latest_train_timestamp = None

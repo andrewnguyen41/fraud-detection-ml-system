@@ -79,7 +79,7 @@ The model achieved an F1 score of 0.92. The F1 score is a metric that considers 
 The project consists of several files and directories:
 
 - **`app.py`**: Entry point of the Flask application.
-- **`app/`**: Directory containing the application modules.
+- **`src/`**: Directory containing the application modules.
     - **`route.py`**: Defines Flask routes for the web application
     - **`model.py`**: Contains functions for model loading, saving, training, prediction
     - **`s3_utils.py`**: Provides utility functions to interact with AWS S3.
