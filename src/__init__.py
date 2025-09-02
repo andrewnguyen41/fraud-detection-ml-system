@@ -1,9 +1,10 @@
-from flask import Flask
-from .model import ModelCache
-from flask_apscheduler import APScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-from .model import check_for_new_data
 from dotenv import load_dotenv
+from flask import Flask
+from flask_apscheduler import APScheduler
+
+from .model import check_for_new_data
+
 
 def create_app():
     app = Flask(__name__)
@@ -17,12 +18,13 @@ def create_app():
     scheduler.add_job(
         func=check_for_new_data,
         trigger=IntervalTrigger(hours=1),
-        id='check_new_data_files',
-        name='Check for new data files in S3 every hour',
+        id="check_new_data_files",
+        name="Check for new data files in S3 every hour",
         replace_existing=True,
     )
 
     from .route import bp as main_bp
+
     app.register_blueprint(main_bp)
 
     return app
