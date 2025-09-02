@@ -9,6 +9,15 @@ from imblearn.over_sampling import SMOTE
 import xgboost as xgb
 from sklearn.metrics import confusion_matrix, classification_report
 
+def reset_model():
+    """Delete existing model to force retraining with new parameters"""
+    model_path = './models/xgboost_model.pkl'
+    if os.path.exists(model_path):
+        os.remove(model_path)
+        print("Existing model deleted. Next training will create a new model.")
+    else:
+        print("No existing model found.")
+
 def preprocess_value(json):
     # preprocessing
     rob_scaler = pickle.load(open('./models/rob_scaler.pkl', 'rb'))
@@ -53,13 +62,29 @@ def train_model():
     sm = SMOTE(random_state=2)
     x_train_s, y_train_s = sm.fit_resample(x_train, y_train.ravel())
 
+    # Check if model already exists and is trained
     if os.path.exists('./models/xgboost_model.pkl'):
+        print("Loading existing trained model...")
         model = pickle.load(open('./models/xgboost_model.pkl', 'rb'))
     else:
-        model = xgb.XGBClassifier(n_estimators=5000, max_depth=30, learning_rate=0.01)
-    model.fit(x_train_s, y_train_s)
-    model = xgb.XGBClassifier(n_estimators=5000, max_depth=30, learning_rate=0.01)
-    model.fit(x_train_s, y_train_s)
+        print("Training new model...")
+        model = xgb.XGBClassifier(
+            n_estimators=200,      
+            max_depth=20,           
+            learning_rate=0.05,
+            subsample=0.8,
+            colsample_bytree=0.8,
+            random_state=42,
+            eval_metric='logloss',
+            early_stopping_rounds=10
+        )
+        
+    model.fit(
+        x_train_s, y_train_s, 
+        eval_set=[(x_test, y_test.ravel())],
+        verbose=True
+    )
+    
     y_pred = model.predict(x_test)
 
     end_time = time.time()

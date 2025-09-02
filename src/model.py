@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 import os
 import pickle
+import pandas as pd
 import numpy as np
 import concurrent.futures
 from src.train import preprocess_value, train_model
@@ -48,6 +49,8 @@ def retrain_model():
         if modified_time > latest_train_timestamp:
             train_files.append(file_path)
 
+    # Initialize combined_data as empty DataFrame
+    combined_data = pd.DataFrame()
     for f in train_files:
         combined_data = combined_data.append(pd.read_csv(f), ignore_index=True)
 
@@ -85,6 +88,8 @@ def check_for_new_data():
             except Exception as e:
                 print(f"Exception occurred for {file_key}: {e}")
    
+    # Update latest_train_timestamp before retraining
+    latest_train_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     retrain_model()
 
 class ModelCache:
