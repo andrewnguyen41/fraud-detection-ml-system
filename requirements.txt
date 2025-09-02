@@ -8,3 +8,4 @@ scipy==1.7.3
 xgboost==1.5.1
 boto3==1.18.63
 python-dotenv==0.19.2
+pytest==7.4.3
